@@ -60,6 +60,10 @@ function render(){
     const app = document.getElementById("app");
     app.innerHTML = "";
 
+    // Izracunaj ukupan broj slicica i koliko je skupljeno
+    let total = 0;
+    let owned = 0;
+
     // kategorije
     for(let cat in categories){
         let html = `<h2>${cat}</h2><div class="grid">`;
@@ -67,6 +71,8 @@ function render(){
         for(let i=1;i<=categories[cat];i++){
             let key = cat + "-" + i;
             let status = data[key];
+            total++;
+            if(status === true) owned++;
             html += `<div class="item ${status===true?'owned':status===false?'missing':''}" onclick="openModal('${key}')">${i}</div>`;
         }
 
@@ -84,6 +90,8 @@ function render(){
             for(let i=1;i<=20;i++){
                 let key = team.code + "-" + i;
                 let status = data[key];
+                total++;
+                if(status === true) owned++;
                 html += `<div class="item ${status===true?'owned':status===false?'missing':''}" onclick="openModal('${key}')">${i}</div>`;
             }
 
@@ -92,6 +100,10 @@ function render(){
 
         app.innerHTML += html;
     });
+
+    // Azuriraj brojac
+    const counter = document.getElementById("counter");
+    if(counter) counter.textContent = `Skupljeno: ${owned} / ${total}`;
 }
 
 // ===== MODAL =====
